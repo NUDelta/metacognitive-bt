@@ -275,8 +275,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 933SWHWTXS;
+				DEVELOPMENT_TEAM = TPHX6WZV8U;
 				INFOPLIST_FILE = "metacognitive-bt/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dtr.metacognitive-bt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -290,8 +291,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 933SWHWTXS;
+				DEVELOPMENT_TEAM = TPHX6WZV8U;
 				INFOPLIST_FILE = "metacognitive-bt/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dtr.metacognitive-bt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
