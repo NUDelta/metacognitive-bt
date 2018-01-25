@@ -22,6 +22,7 @@
 		373105A820139F790067A654 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		373105AB20139F790067A654 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		373105AD20139F790067A654 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3897BA902019777C00228175 /* Test.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Test.gpx; path = ../../Test.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +61,7 @@
 				373105A820139F790067A654 /* Assets.xcassets */,
 				373105AA20139F790067A654 /* LaunchScreen.storyboard */,
 				373105AD20139F790067A654 /* Info.plist */,
+				3897BA902019777C00228175 /* Test.gpx */,
 			);
 			path = "metacognitive-bt";
 			sourceTree = "<group>";

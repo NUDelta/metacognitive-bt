@@ -15,7 +15,7 @@ class ViewController: UIViewController, MKMapViewDelegate
     //MARK: (special comment, aka where you list properties)
     
     @IBOutlet weak var geofenceMapLabel: UILabel!
-    @IBOutlet weak var geofenceMap: MKMapView!
+    @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
     
@@ -27,9 +27,9 @@ class ViewController: UIViewController, MKMapViewDelegate
         locationManager.distanceFilter = kCLLocationAccuracyNearestTenMeters
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
-        geofenceMap.delegate = self;
-        geofenceMap.showsUserLocation = true;
-        geofenceMap.userTrackingMode = .follow
+        mapView.delegate = self
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
         
         setupData()
         
@@ -69,10 +69,12 @@ class ViewController: UIViewController, MKMapViewDelegate
         //1. check if system can monitor regions
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self){
             
+            print("setupData called")
+            
             //2. region data
             let title = "Mudd Library"
             let coordinate = CLLocationCoordinate2DMake(42.058508,-87.674386)
-            let regionRadius = 300.0
+            let regionRadius = 100.0
             
             //3. setup region
             let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude), radius: regionRadius, identifier: title)
@@ -82,18 +84,18 @@ class ViewController: UIViewController, MKMapViewDelegate
             let muddLibraryAnnotation = MKPointAnnotation()
             muddLibraryAnnotation.coordinate = coordinate;
             muddLibraryAnnotation.title = "\(title)";
-            geofenceMap.addAnnotation(muddLibraryAnnotation)
+            mapView.addAnnotation(muddLibraryAnnotation)
             
             //5. setup circle
             let circle = MKCircle(center: coordinate, radius: regionRadius)
-            geofenceMap.add(circle)
+            mapView.add(circle)
         }
         else{
             print("system can't track regions")
         }
     }
     
-    func geofenceMap(geofenceMap: MKMapView, rendererFor overlay:MKOverlay) -> MKOverlayRenderer{
+    func mapView(_ mapView: MKMapView, rendererFor overlay:MKOverlay) -> MKOverlayRenderer{
         let circleRenderer = MKCircleRenderer(overlay: overlay)
         circleRenderer.strokeColor = UIColor.red
         circleRenderer.lineWidth = 1.0
@@ -102,13 +104,15 @@ class ViewController: UIViewController, MKMapViewDelegate
     
     //Tracking regions
     //1. user enters regions
-    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion){
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion){
+        print("entered region")
         let enterAlert = UIAlertController(title: "Alert", message: "enter \(region.identifier)", preferredStyle: UIAlertControllerStyle.alert)
         enterAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(enterAlert, animated: true, completion: nil)
     }
     //2. user exits region
-    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion){
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion){
+        print("exit region")
         let exitAlert = UIAlertController(title: "Alert", message: "exit \(region.identifier)", preferredStyle: UIAlertControllerStyle.alert)
         exitAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(exitAlert, animated: true, completion: nil)
