@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class ViewController: UIViewController, MKMapViewDelegate
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate
 {
     //MARK: (special comment, aka where you list properties)
     
@@ -23,7 +23,7 @@ class ViewController: UIViewController, MKMapViewDelegate
         super.viewDidLoad()
         
         //instance of location manager detects users location changes
-        locationManager.delegate = self as? CLLocationManagerDelegate
+        locationManager.delegate = self
         locationManager.distanceFilter = kCLLocationAccuracyNearestTenMeters
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
@@ -32,13 +32,7 @@ class ViewController: UIViewController, MKMapViewDelegate
         mapView.userTrackingMode = .follow
         
         setupData()
-        
-//        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-//        label.text = "Hello World"
-//        view.addSubview(label)
-//        label.text = "this is some text"
-        
-        // Do any additional setup after loading the view, typically from a nib.
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -69,7 +63,7 @@ class ViewController: UIViewController, MKMapViewDelegate
         //1. check if system can monitor regions
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self){
             
-            print("setupData called")
+            //print("setupData called")
             
             //2. region data
             let title = "Mudd Library"
@@ -79,6 +73,7 @@ class ViewController: UIViewController, MKMapViewDelegate
             //3. setup region
             let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude), radius: regionRadius, identifier: title)
             locationManager.startMonitoring(for: region)
+            print(locationManager.monitoredRegions)
             
             //4. setup annotation
             let muddLibraryAnnotation = MKPointAnnotation()
@@ -117,6 +112,7 @@ class ViewController: UIViewController, MKMapViewDelegate
         exitAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(exitAlert, animated: true, completion: nil)
     }
+    
     
 }
 
