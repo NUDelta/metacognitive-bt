@@ -18,6 +18,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
+    var enterRegionTime = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,19 +101,46 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     //Tracking regions
     //1. user enters regions
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion){
-        print("entered region")
+        //get current date +  time
+        enterRegionTime = Date()
+        //startTimer = NSDate()
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyy-MM-dd HH:mm"
+        let dateCurrent = dateFormatter.string(from: enterRegionTime)
+        print("entered region at \(dateCurrent)")
+        // show alert
         let enterAlert = UIAlertController(title: "Alert", message: "enter \(region.identifier)", preferredStyle: UIAlertControllerStyle.alert)
         enterAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(enterAlert, animated: true, completion: nil)
     }
     //2. user exits region
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion){
-        print("exit region")
+        //get current date + time
+        let exitRegionTime = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyy-MM-dd HH:mm"
+        let dateCurrent = dateFormatter.string(from: exitRegionTime)
+        print("exited region at \(dateCurrent)")
+        
+        //calculate total time in region
+        let totalRegionTime = DateInterval(start: enterRegionTime, end: exitRegionTime).duration
+        let totalTimeString = secondsToHoursMinutesSeconds(seconds: Int(totalRegionTime))
+        print("Total time in region: \(totalTimeString)")
+        
+        // show alert
         let exitAlert = UIAlertController(title: "Alert", message: "exit \(region.identifier)", preferredStyle: UIAlertControllerStyle.alert)
         exitAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(exitAlert, animated: true, completion: nil)
     }
     
+    func secondsToHoursMinutesSeconds(seconds: Int) -> (String){
+        let hrs = seconds/3600
+        let mins = (seconds % 3600) / 60
+        let secs = (seconds % 3600) % 60
+        return "\(hrs) hours, \(mins) minutes, \(secs) seconds"
+    }
     
 }
 
