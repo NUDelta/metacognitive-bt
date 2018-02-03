@@ -12,6 +12,7 @@
 		373105A720139F790067A654 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 373105A520139F790067A654 /* Main.storyboard */; };
 		373105A920139F790067A654 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 373105A820139F790067A654 /* Assets.xcassets */; };
 		373105AC20139F790067A654 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 373105AA20139F790067A654 /* LaunchScreen.storyboard */; };
+		40FA142D2023D12E0067A473 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FA142C2023D12E0067A473 /* SummaryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +23,8 @@
 		373105A820139F790067A654 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		373105AB20139F790067A654 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		373105AD20139F790067A654 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3897BA902019777C00228175 /* Test.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Test.gpx; path = ../../Test.gpx; sourceTree = "<group>"; };
+		403702822022DC0D001DDA5E /* Test.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Test.gpx; sourceTree = "<group>"; };
+		40FA142C2023D12E0067A473 /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +60,11 @@
 				373105A120139F790067A654 /* AppDelegate.swift */,
 				373105A320139F790067A654 /* ViewController.swift */,
 				373105A520139F790067A654 /* Main.storyboard */,
+				40FA142C2023D12E0067A473 /* SummaryViewController.swift */,
 				373105A820139F790067A654 /* Assets.xcassets */,
 				373105AA20139F790067A654 /* LaunchScreen.storyboard */,
 				373105AD20139F790067A654 /* Info.plist */,
-				3897BA902019777C00228175 /* Test.gpx */,
+				403702822022DC0D001DDA5E /* Test.gpx */,
 			);
 			path = "metacognitive-bt";
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 			files = (
 				373105A420139F790067A654 /* ViewController.swift in Sources */,
 				373105A220139F790067A654 /* AppDelegate.swift in Sources */,
+				40FA142D2023D12E0067A473 /* SummaryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TPHX6WZV8U;
 				INFOPLIST_FILE = "metacognitive-bt/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dtr.metacognitive-bt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -295,7 +299,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TPHX6WZV8U;
 				INFOPLIST_FILE = "metacognitive-bt/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dtr.metacognitive-bt";
 				PRODUCT_NAME = "$(TARGET_NAME)";

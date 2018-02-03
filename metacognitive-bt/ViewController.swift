@@ -16,6 +16,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @IBOutlet weak var geofenceMapLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var SummaryButton: UIButton!
     
     let locationManager = CLLocationManager()
     var enterRegionTime = Date()
@@ -31,6 +32,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         mapView.delegate = self
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        
+        SummaryButton.layer.borderWidth = 2
+        SummaryButton.layer.borderColor = UIColor.blue.cgColor
         
         setupData()
 
@@ -53,6 +57,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         else if CLLocationManager.authorizationStatus() == .authorizedAlways{
             locationManager.startUpdatingLocation()
         }
+        
+        if #available(iOS 11.0, *) {
+            let scale = MKScaleView(mapView: mapView)
+            scale.scaleVisibility = .visible // always visible
+            view.addSubview(scale)
+        } else {
+            // Fallback on earlier versions
+        }
+       
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,12 +82,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             //2. region data
             let title = "Mudd Library"
             let coordinate = CLLocationCoordinate2DMake(42.058508,-87.674386)
-            let regionRadius = 100.0
+            let regionRadius = 50.0
             
             //3. setup region
             let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude), radius: regionRadius, identifier: title)
             locationManager.startMonitoring(for: region)
-            print(locationManager.monitoredRegions)
             
             //4. setup annotation
             let muddLibraryAnnotation = MKPointAnnotation()
@@ -113,26 +125,38 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let enterAlert = UIAlertController(title: "Alert", message: "enter \(region.identifier)", preferredStyle: UIAlertControllerStyle.alert)
         enterAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(enterAlert, animated: true, completion: nil)
+        locationManager.startMonitoring(for: region)
     }
     //2. user exits region
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion){
         //get current date + time
         let exitRegionTime = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "yyy-MM-dd HH:mm"
-        let dateCurrent = dateFormatter.string(from: exitRegionTime)
+        let dateFormatter2 = DateFormatter()
+        dateFormatter2.timeZone = TimeZone.current
+        dateFormatter2.dateFormat = "yyy-MM-dd HH:mm"
+        let dateCurrent = dateFormatter2.string(from: exitRegionTime)
         print("exited region at \(dateCurrent)")
         
         //calculate total time in region
-        let totalRegionTime = DateInterval(start: enterRegionTime, end: exitRegionTime).duration
-        let totalTimeString = secondsToHoursMinutesSeconds(seconds: Int(totalRegionTime))
-        print("Total time in region: \(totalTimeString)")
+        if #available(iOS 10.0, *) {
+            let totalRegionTime = DateInterval(start: enterRegionTime, end: exitRegionTime).duration
+            let totalTimeString = secondsToHoursMinutesSeconds(seconds: Int(totalRegionTime))
+            print("Total time in region: \(totalTimeString)")
+        } else {
+            // Fallback on earlier versions
+        }
+
         
         // show alert
         let exitAlert = UIAlertController(title: "Alert", message: "exit \(region.identifier)", preferredStyle: UIAlertControllerStyle.alert)
         exitAlert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(exitAlert, animated: true, completion: nil)
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("didFailWithError")
+    }
+    func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+        print("DidPauseLocationUpdates")
     }
     
     func secondsToHoursMinutesSeconds(seconds: Int) -> (String){
