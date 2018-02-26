@@ -40,10 +40,10 @@ for (var j = 0; j < keyList.length; j++) {
       date = hist[currTab][i][0].toLocaleDateString();
     //}
     r.insertCell(-1).textContent = date;
-    csvtable.push(date.toString() + "\n");
+    csvtable.push(date.toString());
 
     r.insertCell(-1).textContent = hist[currTab][i][0].toLocaleTimeString('en-GB');
-    csvtable.push((hist[currTab][i][0].toLocaleTimeString('en-GB')).toString() + "\n");
+    csvtable.push((hist[currTab][i][0].toLocaleTimeString('en-GB')).toString());
 
     var end_time;
     if (i == 0) {
@@ -56,12 +56,12 @@ for (var j = 0; j < keyList.length; j++) {
     var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
     // console.log(timeS);
     // console.log(duration);
-    csvtable.push(timeS + "\n");
+    csvtable.push(timeS);
 
     var tab = document.createElement("p");
     var node = document.createTextNode(currTab.toString());
     r.insertCell(0).appendChild(node);
-    csvtable.push(currTab.toString() + "\n");
+    csvtable.push(currTab.toString());
 
     var a = document.createElement("a");
     a.textContent = hist[currTab][i][1];
