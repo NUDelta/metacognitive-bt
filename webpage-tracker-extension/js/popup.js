@@ -27,7 +27,21 @@ var hist = chrome.extension.getBackgroundPage().History;
 
 var keyList = Object.keys(hist);
 
+//display data table in extension popup
 var datatable = document.createElement("table");
+datatable.id = "table";
+
+//add headers to table
+// var header = datatable.createTHead();
+var headerRow = datatable.insertRow();
+headerRow.insertCell().textContent = "Tab";
+headerRow.insertCell().textContent = "Date";
+headerRow.insertCell().textContent = "Start";
+headerRow.insertCell().textContent = "Total ";
+headerRow.insertCell().textContent = "Url";
+headerRow.id = "tableHeader";
+
+
 for (var j = 0; j < keyList.length; j++) {
   currTab = keyList[j];
 
@@ -35,14 +49,12 @@ for (var j = 0; j < keyList.length; j++) {
     var r = datatable.insertRow(-1);
 
     var date = "";
-    //if (i == hist[currTab].length - 1 ||
-      //  (hist[currTab][i][0].toLocaleDateString() != hist[currTab][i+1][0].toLocaleDateString())) {
-      date = hist[currTab][i][0].toLocaleDateString();
-    //}
+    date = hist[currTab][i][0].toLocaleDateString();
+
     r.insertCell(-1).textContent = date;
     csvtable.push(date.toString());
 
-    r.insertCell(-1).textContent = hist[currTab][i][0].toLocaleTimeString('en-GB');
+    r.insertCell(-1).textContent = hist[currTab][i][0].toLocaleTimeString('en-GB').substring(0,5);
     csvtable.push((hist[currTab][i][0].toLocaleTimeString('en-GB')).toString());
 
     var end_time;
@@ -70,7 +82,8 @@ for (var j = 0; j < keyList.length; j++) {
     r.insertCell(-1).appendChild(a);
     csvtable.push(a.toString() + "\n");
 
-}
+    }
+
 }
 
 

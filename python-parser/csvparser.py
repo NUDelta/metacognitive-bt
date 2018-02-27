@@ -16,6 +16,7 @@ def minToSec(time_string):
     ftr = [60,1]
     if "." in time_string:
         return sum([a*b for a,b in zip(ftr, map(int,time_string.split('.')))])
+        # return (float(time_string) * 1000)
     else:
         return sum([a*b for a,b in zip(ftr, map(int,time_string.split(':')))])
 
@@ -36,7 +37,7 @@ onlineShoppingSites = []
 total_online_time = 0
 total_SM_time = 0
 
-with open('/Users/Allison/Desktop/metacognitive-bt/pythonfiles/data2.csv', 'rb') as csvfile:
+with open('Sebastian-data.csv', 'rb') as csvfile:
     filereader = csv.reader(csvfile, delimiter=',')
     for row in filereader:
         datalist.append(row[1]);
@@ -47,8 +48,11 @@ for i in xrange(0, len(datalist), 5):
     time_spent = datalist[i+2]
     tab = datalist[i+3]
     url = datalist[i+4]
+    print(date,time,time_spent, tab, url)
 
     total_online_time = total_online_time + (minToSec(datalist[i+2]))
+    print("time_spent", datalist[i+2])
+    print("minToSec", total_online_time)
     webpageList.append(make_webpage(date, time, time_spent, tab, url))
 
 

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-var History = {};
+var History = {}; //dictionary of web history
 
+// Extension icon timer
 chrome.browserAction.setBadgeText({ 'text': '?'});
 chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
@@ -30,6 +31,8 @@ function Update(t, tabId, url) {
   } else {
     History[tabId] = [];
   }
+
+  //add time and url to front
   History[tabId].unshift([t, url]);
 
   var history_limit = parseInt(localStorage["history_size"]);
@@ -40,6 +43,7 @@ function Update(t, tabId, url) {
     History[tabId].pop();
   }
 
+  //update extension icon timer
   chrome.browserAction.setBadgeText({ 'tabId': tabId, 'text': '0:00'});
   chrome.browserAction.setPopup({ 'tabId': tabId, 'popup': "popup.html#tabId=" + tabId});
 }

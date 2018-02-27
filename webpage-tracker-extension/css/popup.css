@@ -1,0 +1,18 @@
+body{
+	background: #eedef7;
+}
+
+table{
+	border-collapse: collapse;
+}
+table td{
+	padding: 5px;
+}
+
+/*table th td{
+	border-spacing: 5px;
+}*/
+
+#tableHeader{
+	background: #d398e6;
+}
