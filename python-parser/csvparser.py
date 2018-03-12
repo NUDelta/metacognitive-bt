@@ -37,7 +37,7 @@ onlineShoppingSites = []
 total_online_time = 0
 total_SM_time = 0
 
-with open('Sebastian-data.csv', 'rb') as csvfile:
+with open('data.csv', 'rb') as csvfile:
     filereader = csv.reader(csvfile, delimiter=',')
     for row in filereader:
         datalist.append(row[1]);

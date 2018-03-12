@@ -20,6 +20,28 @@ var History = {}; //dictionary of web history
 chrome.browserAction.setBadgeText({ 'text': '?'});
 chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
+var opt = {
+  type: "basic",
+  title: "Inactivity Triggered",
+  message: "What were you doing?",
+  iconUrl: "../images/thinking_face.png",
+  // buttons: [{"yes"}, {"no"],
+  isClickable: true
+}
+
+//detect inactivity
+chrome.idle.setDetectionInterval(15);
+chrome.idle.onStateChanged.addListener(function(state) {
+  console.log("state changed: ", state);
+  if (state == "idle"){
+    chrome.notifications.create(opt, function(notificationID){
+      console.log("hi");
+    });
+  }
+});
+
+
+
 function Update(t, tabId, url) {
   if (!url) {
     return;
