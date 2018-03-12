@@ -25,8 +25,10 @@ var opt = {
   title: "Inactivity Triggered",
   message: "What were you doing?",
   iconUrl: "../images/thinking_face.png",
-  // buttons: [{"yes"}, {"no"],
-  isClickable: true
+  buttons: [{title: "Input Here"}],
+  eventTime: Date.now(),
+  isClickable: true,
+  requireInteraction: true
 }
 
 //detect inactivity
@@ -40,6 +42,7 @@ chrome.idle.onStateChanged.addListener(function(state) {
   }
 });
 
+// chrome.notifications.onButtonClicked.addListener(inputActivity);
 
 
 function Update(t, tabId, url) {
