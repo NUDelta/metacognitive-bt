@@ -16,6 +16,7 @@
 
 var History = {}; //dictionary of web history
 var was_idle = false;
+var start_idle, end_idle;
 
 // Extension icon timer
 chrome.browserAction.setBadgeText({ 'text': '?'});
@@ -41,17 +42,28 @@ chrome.idle.onStateChanged.addListener(function(state) {
 
   if (state == "idle"){
     was_idle = true;
-    console.log("state changed: ", state);
+    start_idle = Date.now();
   }
   if (was_idle && state == "active"){
     was_idle = false;
-    chrome.notifications.create(opt, function(notificationID){
-      console.log("hi");
-    });
+    end_idle = Date.now();
+    window.open("../inactivity-input.html");
+    console.log(start_idle, end_idle);
+    // SWITCHED TO OPENING HTML PAGE INSTEAD OF NOTIFICATION
+    // chrome.notifications.create(opt, function(notificationID){
+    //   console.log("hi");
+    // });
   }
 });
 
+// OLD NOTIFICATION STUFF IN CASE WE WANNA SEND A NOTIFICATION
 // chrome.notifications.onButtonClicked.addListener(inputActivity);
+// chrome.notifications.onButtonClicked.addListener(function(notifId) {
+//     // window.prompt("whatcha doing?","enter your response here.");
+//     window.open("../inactivity-input.html");
+// });
+
+
 
 
 function Update(t, tabId, url) {

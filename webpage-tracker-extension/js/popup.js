@@ -19,10 +19,6 @@
  		idleTimeoutInSeconds: 30 // seconds
  	});
 
-  chrome.runtime.getBackgroundPage(function(bg) {
-      window.prompt("whatcha doing?","enter your response here.");
-  })
-
 var csvtable = [];
 var tabId_re = /tabId=([0-9]+)/;
 var match = tabId_re.exec(window.location.hash);
