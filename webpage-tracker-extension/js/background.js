@@ -15,7 +15,9 @@
  */
 
 var History = {}; //dictionary of web history
-var was_idle = false;
+var inactivelog = [];
+var activeStatus = true;
+var IdleAction = {};
 
 // Extension icon timer
 chrome.browserAction.setBadgeText({ 'text': '?'});
@@ -23,16 +25,21 @@ chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
 var opt = {
   type: "basic",
-  title: "Welcome back!",
+  title: "Inactivity Triggered",
   message: "What were you doing?",
   iconUrl: "../images/thinking_face.png",
-  buttons: [{title: "Input Here"}],
+  buttons: [{title: "Input Here",
+            }],
   eventTime: Date.now(),
   isClickable: true,
   requireInteraction: true
 }
 
+// function windowPrompt() {
+//   window.prompt("whatcha doing?","enter your response here.")
+// }
 //detect inactivity
+
 chrome.idle.setDetectionInterval(15);
 chrome.idle.onStateChanged.addListener(function(state) {
   console.log("state changed: ", state);
@@ -47,9 +54,30 @@ chrome.idle.onStateChanged.addListener(function(state) {
     was_idle = false;
     chrome.notifications.create(opt, function(notificationID){
       console.log("hi");
+      var inactiveStart = Date.now()
+      var responseWhenAway;
+      responseWhenAway = window.prompt("whatcha doing?","enter your response here.");
+      window.alert(responseWhenAway)
+      IdleAction[responseWhenAway] = Date.now()-inactiveStart;
     });
   }
 });
+
+// chrome.idle.setDetectionInterval(15);
+// chrome.idle.onStateChanged.addListener(function(state) {
+//   console.log("state changed: ", state);
+//   activeStatus = false;
+//   if (state == "idle"){
+//     chrome.notifications.create(opt, function(notificationID){
+//       console.log("hi");
+//       var inactiveStart = Date.now()
+//       var responseWhenAway;
+//       responseWhenAway = window.prompt("whatcha doing?","enter your response here.");
+//       window.alert(responseWhenAway)
+//       IdleAction[responseWhenAway] = Date.now()-inactiveStart;
+//     });
+//   }
+// });
 
 // chrome.notifications.onButtonClicked.addListener(inputActivity);
 
