@@ -15,6 +15,7 @@
  */
 
 var History = {}; //dictionary of web history
+var was_idle = false;
 
 // Extension icon timer
 chrome.browserAction.setBadgeText({ 'text': '?'});
@@ -22,7 +23,7 @@ chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
 var opt = {
   type: "basic",
-  title: "Inactivity Triggered",
+  title: "Welcome back!",
   message: "What were you doing?",
   iconUrl: "../images/thinking_face.png",
   buttons: [{title: "Input Here"}],
@@ -35,7 +36,15 @@ var opt = {
 chrome.idle.setDetectionInterval(15);
 chrome.idle.onStateChanged.addListener(function(state) {
   console.log("state changed: ", state);
+
+  // need to push notification AFTER idle session (re-active state)
+
   if (state == "idle"){
+    was_idle = true;
+    console.log("state changed: ", state);
+  }
+  if (was_idle && state == "active"){
+    was_idle = false;
     chrome.notifications.create(opt, function(notificationID){
       console.log("hi");
     });
