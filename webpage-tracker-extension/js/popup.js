@@ -24,6 +24,7 @@ var tabId_re = /tabId=([0-9]+)/;
 var match = tabId_re.exec(window.location.hash);
 
 var hist = chrome.extension.getBackgroundPage().History;
+var idleAction = chrome.extension.getBackgroundPage().IdleAction;
 
 var keyList = Object.keys(hist);
 
@@ -113,9 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
     var link = document.getElementById('link');
     // onClick's logic below:
     link.addEventListener('click', function() {
-        download(encodedUri, "data.csv");;
+        download(encodedUri, "data.csv");
+        
     });
 });
 
 document.body.appendChild(datatable);
 document.body.appendChild(link);
+
+
+// //TRYING THIS 
+// function FormatDuration(d) {
+//   if (d < 0) {
+//     return "?";
+//   }
+//   var divisor = d < 3600000 ? [60000, 1000] : [3600000, 60000];
+//   function pad(x) {
+//     return x < 10 ? "0" + x : x;
+//   }
+//   return Math.floor(d / divisor[0]) + ":" + pad(Math.floor((d % divisor[0]) / divisor[1]));
+// }

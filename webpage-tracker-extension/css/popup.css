@@ -16,3 +16,14 @@ table td{
 #tableHeader{
 	background: #d398e6;
 }
+
+button{
+	background-color: #d398e6;
+    border: none;
+    color: black;
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}

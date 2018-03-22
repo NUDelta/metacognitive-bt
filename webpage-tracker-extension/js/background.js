@@ -15,8 +15,13 @@
  */
 
 var History = {}; //dictionary of web history
+var inactivelog = [];
 var was_idle = false;
 var start_idle, end_idle;
+// var input_tab_open = false;
+
+// var activeStatus = true;
+// var IdleAction = {};
 
 // Extension icon timer
 chrome.browserAction.setBadgeText({ 'text': '?'});
@@ -24,31 +29,38 @@ chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
 var opt = {
   type: "basic",
-  title: "Welcome back!",
+  title: "Inactivity Triggered",
   message: "What were you doing?",
   iconUrl: "../images/thinking_face.png",
-  buttons: [{title: "Input Here"}],
+  buttons: [{title: "Input Here",
+            }],
   eventTime: Date.now(),
   isClickable: true,
   requireInteraction: true
 }
 
-//detect inactivity
+
+//DETECT INACTIVITY CHANGE
 chrome.idle.setDetectionInterval(15);
 chrome.idle.onStateChanged.addListener(function(state) {
   console.log("state changed: ", state);
 
   // need to push notification AFTER idle session (re-active state)
-
   if (state == "idle"){
     was_idle = true;
+    // input_tab_open = false;
     start_idle = Date.now();
   }
   if (was_idle && state == "active"){
     was_idle = false;
+
     end_idle = Date.now();
-    window.open("../inactivity-input.html");
-    console.log(start_idle, end_idle);
+    // if (input_tab_open == false){
+      window.open("../inactivity-input.html");
+      // var input_tab_open = true;
+      console.log(start_idle, end_idle);
+  // }
+    
     // SWITCHED TO OPENING HTML PAGE INSTEAD OF NOTIFICATION
     // chrome.notifications.create(opt, function(notificationID){
     //   console.log("hi");
@@ -56,13 +68,16 @@ chrome.idle.onStateChanged.addListener(function(state) {
   }
 });
 
-// OLD NOTIFICATION STUFF IN CASE WE WANNA SEND A NOTIFICATION
-// chrome.notifications.onButtonClicked.addListener(inputActivity);
-// chrome.notifications.onButtonClicked.addListener(function(notifId) {
-//     // window.prompt("whatcha doing?","enter your response here.");
-//     window.open("../inactivity-input.html");
-// });
 
+// OLD NOTIFICATION STUFF IN CASE WE WANNA SEND A NOTIFICATION
+// chrome.notifications.create(opt, function(notificationID){
+//   console.log("hi");
+//   var inactiveStart = Date.now()
+//   var responseWhenAway;
+//   responseWhenAway = window.prompt("whatcha doing?","enter your response here.");
+//   window.alert(responseWhenAway)
+//   IdleAction[responseWhenAway] = Date.now()-inactiveStart;
+// });
 
 
 
@@ -124,3 +139,16 @@ setInterval(UpdateBadges, 1000);
 chrome.tabs.onUpdated.addListener(HandleUpdate);
 // chrome.tabs.onRemoved.addListener(HandleRemove);
 chrome.tabs.onReplaced.addListener(HandleReplace);
+
+
+// //TRYING THIS
+// function FormatDuration(d) {
+//   if (d < 0) {
+//     return "?";
+//   }
+//   var divisor = d < 3600000 ? [60000, 1000] : [3600000, 60000];
+//   function pad(x) {
+//     return x < 10 ? "0" + x : x;
+//   }
+//   return Math.floor(d / divisor[0]) + ":" + pad(Math.floor((d % divisor[0]) / divisor[1]));
+// }
