@@ -9,14 +9,6 @@ table td{
 	padding: 5px;
 }
 
-/*table th td{
-	border-spacing: 5px;
-}*/
-
-#tableHeader{
-	background: #d398e6;
-}
-
 button{
 	background-color: #d398e6;
     border: none;
@@ -26,4 +18,12 @@ button{
     text-decoration: none;
     display: inline-block;
     font-size: 15px;
+}
+
+#start_stop{
+    padding: 10px;
+}
+
+#tableHeader{
+    background: #d398e6;
 }

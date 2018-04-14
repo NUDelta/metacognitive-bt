@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+console.log("popup reloaded at ", Date.now());
  TimeMe.initialize({
  		currentPageName: "my-home-page", // current page
  		idleTimeoutInSeconds: 30 // seconds
  	});
+
 
 var csvtable = [];
 var tabId_re = /tabId=([0-9]+)/;
@@ -27,6 +29,60 @@ var hist = chrome.extension.getBackgroundPage().History;
 var idleAction = chrome.extension.getBackgroundPage().IdleAction;
 
 var keyList = Object.keys(hist);
+
+
+//START AND STOP SESSION STUFF
+var session_started = chrome.extension.getBackgroundPage().sessionStarted;
+
+var start_stop_btn = document.createElement("BUTTON");
+var btn_txt = "";
+start_stop_btn.id = 'start_stop';
+
+//initialize button
+if(session_started == false){
+    btn_txt =document.createTextNode("Start Session");
+    start_stop_btn.appendChild(btn_txt);
+    document.body.appendChild(start_stop_btn);
+}
+else{
+    btn_txt = document.createTextNode("End Session");
+    start_stop_btn.appendChild(btn_txt);
+    document.body.appendChild(start_stop_btn);
+}
+
+start_stop_btn.addEventListener('click', function() {
+    chrome.extension.getBackgroundPage().sessionStarted = !session_started;
+    session_started = chrome.extension.getBackgroundPage().sessionStarted;
+
+    if(session_started == true){
+        chrome.extension.getBackgroundPage().start_session_time = Date.now();
+        chrome.extension.getBackgroundPage().History = {};
+
+        //reload tab to begin tracking
+        //get old window ID
+        chrome.windows.create(); //generate new session
+        // chrome.windows.remove(old_window.id);//close old window
+
+        //update button text
+        start_stop_btn.removeChild(btn_txt);
+        btn_txt = document.createTextNode("End Session");
+        start_stop_btn.appendChild(btn_txt);
+    }
+    else{
+        chrome.extension.getBackgroundPage().start_session_time = Date.now();
+        chrome.extension.getBackgroundPage().sessionEnded = true;
+        start_stop_btn.removeChild(btn_txt);
+        btn_txt = document.createTextNode("Session Ended");
+        start_stop_btn.appendChild(btn_txt);
+
+        //disable button and update popup
+        chrome.tabs.reload();
+        start_stop_btn.disabled = true;
+        start_stop_btn.style.background = "#8b6f94";
+    }
+
+});
+
 
 //display data table in extension popup
 var datatable = document.createElement("table");
@@ -43,48 +99,49 @@ headerRow.insertCell().textContent = "Url";
 headerRow.id = "tableHeader";
 
 
-for (var j = 0; j < keyList.length; j++) {
-  currTab = keyList[j];
+if(session_started == true){
+    for (var j = 0; j < keyList.length; j++) {
+      currTab = keyList[j];
 
-  for (var i=0; i < hist[currTab].length; i++) {
-    var r = datatable.insertRow(-1);
+      for (var i=0; i < hist[currTab].length; i++) {
+        var r = datatable.insertRow(-1);
 
-    var date = "";
-    date = hist[currTab][i][0].toLocaleDateString();
+        var date = "";
+        date = hist[currTab][i][0].toLocaleDateString();
 
-    r.insertCell(-1).textContent = date;
-    csvtable.push(date.toString());
+        r.insertCell(-1).textContent = date;
+        csvtable.push(date.toString());
 
-    r.insertCell(-1).textContent = hist[currTab][i][0].toLocaleTimeString('en-GB').substring(0,5);
-    csvtable.push((hist[currTab][i][0].toLocaleTimeString('en-GB')).toString());
+        r.insertCell(-1).textContent = hist[currTab][i][0].toLocaleTimeString('en-GB').substring(0,5);
+        csvtable.push((hist[currTab][i][0].toLocaleTimeString('en-GB')).toString());
 
-    var end_time;
-    if (i == 0) {
-      end_time = new Date();
-    } else {
-      end_time = hist[currTab][i-1][0];
+        var end_time;
+        if (i == 0) {
+          end_time = new Date();
+        } else {
+          end_time = hist[currTab][i-1][0];
+        }
+        r.insertCell(-1).textContent = FormatDuration(end_time - hist[currTab][i][0]);
+        // var duration = FormatDuration(end_time - hist[currTab][i][0]);
+        var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
+        // console.log(timeS);
+        // console.log(duration);
+        csvtable.push(timeS);
+
+        var tab = document.createElement("p");
+        var node = document.createTextNode(currTab.toString());
+        r.insertCell(0).appendChild(node);
+        csvtable.push(currTab.toString());
+
+        var a = document.createElement("a");
+        a.textContent = hist[currTab][i][1];
+        a.setAttribute("href", hist[currTab][i][1]);
+        a.setAttribute("target", "_blank");
+        r.insertCell(-1).appendChild(a);
+        csvtable.push(a.toString() + "\n");
+
+        }
     }
-    r.insertCell(-1).textContent = FormatDuration(end_time - hist[currTab][i][0]);
-    // var duration = FormatDuration(end_time - hist[currTab][i][0]);
-    var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
-    // console.log(timeS);
-    // console.log(duration);
-    csvtable.push(timeS);
-
-    var tab = document.createElement("p");
-    var node = document.createTextNode(currTab.toString());
-    r.insertCell(0).appendChild(node);
-    csvtable.push(currTab.toString());
-
-    var a = document.createElement("a");
-    a.textContent = hist[currTab][i][1];
-    a.setAttribute("href", hist[currTab][i][1]);
-    a.setAttribute("target", "_blank");
-    r.insertCell(-1).appendChild(a);
-    csvtable.push(a.toString() + "\n");
-
-    }
-
 }
 
 

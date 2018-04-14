@@ -17,8 +17,13 @@
 var History = {}; //dictionary of web history
 var inactivelog = [];
 var was_idle = false;
-var start_idle, end_idle;
+var input_tab_open = false;
+var sessionStarted = false;
+var sessionEnded = false;
 // var input_tab_open = false;
+
+var start_idle, end_idle;
+var start_session_time, end_session_time;
 
 // var activeStatus = true;
 // var IdleAction = {};
@@ -27,44 +32,35 @@ var start_idle, end_idle;
 chrome.browserAction.setBadgeText({ 'text': '?'});
 chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
-var opt = {
-  type: "basic",
-  title: "Inactivity Triggered",
-  message: "What were you doing?",
-  iconUrl: "../images/thinking_face.png",
-  buttons: [{title: "Input Here",
-            }],
-  eventTime: Date.now(),
-  isClickable: true,
-  requireInteraction: true
-}
+// var opt = {
+//   type: "basic",
+//   title: "Inactivity Triggered",
+//   message: "What were you doing?",
+//   iconUrl: "../images/thinking_face.png",
+//   buttons: [{title: "Input Here",
+//             }],
+//   eventTime: Date.now(),
+//   isClickable: true,
+//   requireInteraction: true
+// }
 
-
-//DETECT INACTIVITY CHANGE
+//DETECT INACTIVITY CHANGE AND SAVE RESPONSE
 chrome.idle.setDetectionInterval(15);
 chrome.idle.onStateChanged.addListener(function(state) {
-  console.log("state changed: ", state);
 
   // need to push notification AFTER idle session (re-active state)
   if (state == "idle"){
     was_idle = true;
-    // input_tab_open = false;
     start_idle = Date.now();
   }
   if (was_idle && state == "active"){
     was_idle = false;
-
     end_idle = Date.now();
-    // if (input_tab_open == false){
+    if (input_tab_open == false){
       window.open("../inactivity-input.html");
-      // var input_tab_open = true;
+      input_tab_open = true;
       console.log(start_idle, end_idle);
-  // }
-    
-    // SWITCHED TO OPENING HTML PAGE INSTEAD OF NOTIFICATION
-    // chrome.notifications.create(opt, function(notificationID){
-    //   console.log("hi");
-    // });
+    }
   }
 });
 
@@ -110,6 +106,11 @@ function Update(t, tabId, url) {
 }
 
 function HandleUpdate(tabId, changeInfo, tab) {
+  if(sessionEnded){
+    chrome.browserAction.setBadgeText({ 'tabId': tabId, 'text': 'Done'});
+    chrome.browserAction.setPopup({ 'tabId': tabId, 'popup': "done.html"});
+    return;
+  }
   Update(new Date(), tabId, changeInfo.url);
 }
 
@@ -127,10 +128,12 @@ function HandleReplace(addedTabId, removedTabId) {
 
 
 function UpdateBadges() {
-  var now = new Date();
-  for (tabId in History) {
-    var description = FormatDuration(now - History[tabId][0][0]);
-    chrome.browserAction.setBadgeText({ 'tabId': parseInt(tabId), 'text': description});
+  if(sessionStarted == true){
+    var now = new Date();
+    for (tabId in History) {
+      var description = FormatDuration(now - History[tabId][0][0]);
+      chrome.browserAction.setBadgeText({ 'tabId': parseInt(tabId), 'text': description});
+    }
   }
 }
 
