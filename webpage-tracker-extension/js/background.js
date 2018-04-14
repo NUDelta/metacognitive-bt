@@ -48,18 +48,20 @@ chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 chrome.idle.setDetectionInterval(15);
 chrome.idle.onStateChanged.addListener(function(state) {
 
-  // need to push notification AFTER idle session (re-active state)
-  if (state == "idle"){
-    was_idle = true;
-    start_idle = Date.now();
-  }
-  if (was_idle && state == "active"){
-    was_idle = false;
-    end_idle = Date.now();
-    if (input_tab_open == false){
-      window.open("../inactivity-input.html");
-      input_tab_open = true;
-      console.log(start_idle, end_idle);
+  if(sessionStarted == true){
+    // need to push notification AFTER idle session (re-active state)
+    if (state == "idle"){
+      was_idle = true;
+      start_idle = Date.now();
+    }
+    if (was_idle && state == "active"){
+      was_idle = false;
+      end_idle = Date.now();
+      if (input_tab_open == false){
+        window.open("../inactivity-input.html");
+        input_tab_open = true;
+        console.log(start_idle, end_idle);
+      }
     }
   }
 });
