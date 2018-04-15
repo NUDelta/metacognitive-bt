@@ -32,6 +32,14 @@ var start_session_time, end_session_time;
 chrome.browserAction.setBadgeText({ 'text': '?'});
 chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
+
+//LOCATION STUFF
+navigator.geolocation.getCurrentPosition(getPosition);
+
+function getPosition(pos){
+  console.log("got position", pos);
+}
+
 // var opt = {
 //   type: "basic",
 //   title: "Inactivity Triggered",

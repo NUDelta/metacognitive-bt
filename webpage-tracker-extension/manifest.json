@@ -10,7 +10,8 @@
     "tabs",
     "activeTab",
     "idle",
-    "notifications"
+    "notifications",
+    "geolocation"
   ],
   "icons": {
     "16": "images/clock16.png",
