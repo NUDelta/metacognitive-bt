@@ -10,7 +10,17 @@ function save_options(){
 
   	console.log("check checkboxes");
   	console.log(start_idle, end_idle);
+    try {
+      var checkedValue = document.querySelector('.check:checked').value;
+      console.log(checkedValue)
+    }
+    catch(e) {
+        var inputValue = document.getElementById("other").value;
+        console.log(inputValue)
+    }
+
   	chrome.extension.getBackgroundPage().input_tab_open = false;
-  	window.close();
+    //chrome.extension.getBackgroundPage().inactivelog.append
+  	//window.close();
 
 }
