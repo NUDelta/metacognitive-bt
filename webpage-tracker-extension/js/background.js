@@ -153,6 +153,10 @@ chrome.tabs.onUpdated.addListener(HandleUpdate);
 // chrome.tabs.onRemoved.addListener(HandleRemove);
 chrome.tabs.onReplaced.addListener(HandleReplace);
 
+function clearInactiveLog(inactivelog) {
+  inactivelog = [];
+}
+
 
 // //TRYING THIS
 // function FormatDuration(d) {
