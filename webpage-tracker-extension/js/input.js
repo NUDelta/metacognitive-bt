@@ -12,11 +12,13 @@ function save_options(){
   	console.log(start_idle, end_idle);
     try {
       var checkedValue = document.querySelector('.check:checked').value;
-      console.log(checkedValue)
+      console.log(Date(Date.now()).toString(), checkedValue)
+      chrome.extension.getBackgroundPage().inactivelog.push([Date(Date.now()).toString(), checkedValue])
     }
     catch(e) {
         var inputValue = document.getElementById("other").value;
-        console.log(inputValue)
+        console.log(Date(Date.now()).toString(), inputValue)
+        chrome.extension.getBackgroundPage().inactivelog.push([Date(Date.now()).toString(), inputValue])
     }
 
   	chrome.extension.getBackgroundPage().input_tab_open = false;
