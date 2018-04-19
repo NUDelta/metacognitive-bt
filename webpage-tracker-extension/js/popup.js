@@ -26,10 +26,25 @@ var tabId_re = /tabId=([0-9]+)/;
 var match = tabId_re.exec(window.location.hash);
 
 var hist = chrome.extension.getBackgroundPage().History;
-var idleAction = chrome.extension.getBackgroundPage().IdleAction;
+var idleAction = chrome.extension.getBackgroundPage().inactivelog;
 
 var keyList = Object.keys(hist);
+var SortedActivity =[];
+var AllActivity = [];
 
+//Interleaving web stuff with the idle stuff
+for (var x = 0; x < keyList.length; x++) {
+  currTab = keyList[x];
+  for(var y = 0; y < hist[currTab].length; y++) {
+    AllActivity.push(hist[currTab][y])
+  }
+}
+
+for (var j = 0; j < idleAction.length; j++) {
+  AllActivity.push(idleAction[j])
+}
+
+SortedActivity = AllActivity.sort()
 
 //START AND STOP SESSION STUFF
 var session_started = chrome.extension.getBackgroundPage().sessionStarted;
@@ -100,28 +115,39 @@ headerRow.id = "tableHeader";
 
 
 if(session_started == true){
-    for (var j = 0; j < keyList.length; j++) {
-      currTab = keyList[j];
-
-      for (var i=0; i < hist[currTab].length; i++) {
+    for (var i = 0; i < SortedActivity.length; i++) {
         var r = datatable.insertRow(-1);
 
         var date = "";
-        date = hist[currTab][i][0].toLocaleDateString();
+        var date_obj = "";
+        try {
+          date = SortedActivity[i][0].toLocaleDateString();
+        }
+        catch(e) {
+          date_obj = new Date(SortedActivity[i][0])
+          date = date_obj.toLocaleDateString();
+        }
 
         r.insertCell(-1).textContent = date;
         csvtable.push(date.toString());
 
-        r.insertCell(-1).textContent = hist[currTab][i][0].toLocaleTimeString('en-GB').substring(0,5);
-        csvtable.push((hist[currTab][i][0].toLocaleTimeString('en-GB')).toString());
+        var start_time = "";
+        try {
+          start_time = SortedActivity[i][0].toLocaleTimeString('en-GB').substring(0,5);
+        }
+        catch(e) {
+          start_time = date_obj.toLocaleTimeString('en-GB').substring(0,5);
+        }
+        r.insertCell(-1).textContent = start_time;
+        csvtable.push(start_time.toString());
 
         var end_time;
         if (i == 0) {
           end_time = new Date();
         } else {
-          end_time = hist[currTab][i-1][0];
+          end_time = SortedActivity[i-1][0];
         }
-        r.insertCell(-1).textContent = FormatDuration(end_time - hist[currTab][i][0]);
+        r.insertCell(-1).textContent = FormatDuration(end_time - SortedActivity[i][0]);
         // var duration = FormatDuration(end_time - hist[currTab][i][0]);
         var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
         // console.log(timeS);
@@ -134,14 +160,13 @@ if(session_started == true){
         csvtable.push(currTab.toString());
 
         var a = document.createElement("a");
-        a.textContent = hist[currTab][i][1];
-        a.setAttribute("href", hist[currTab][i][1]);
+        a.textContent = SortedActivity[i][1];
+        a.setAttribute("href", SortedActivity[i][1]);
         a.setAttribute("target", "_blank");
         r.insertCell(-1).appendChild(a);
         csvtable.push(a.toString() + "\n");
 
         }
-    }
 }
 
 
@@ -172,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // onClick's logic below:
     link.addEventListener('click', function() {
         download(encodedUri, "data.csv");
-        
+
     });
 });
 
@@ -180,7 +205,7 @@ document.body.appendChild(datatable);
 document.body.appendChild(link);
 
 
-// //TRYING THIS 
+// //TRYING THIS
 // function FormatDuration(d) {
 //   if (d < 0) {
 //     return "?";
