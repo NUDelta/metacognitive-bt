@@ -147,9 +147,10 @@ if(session_started == true){
         } else {
           end_time = SortedActivity[i-1][0];
         }
-        r.insertCell(-1).textContent = FormatDuration(end_time - SortedActivity[i][0]);
+        //r.insertCell(-1).textContent = FormatDuration(end_time - SortedActivity[i][0]);
         // var duration = FormatDuration(end_time - hist[currTab][i][0]);
         var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
+        r.insertCell(-1).textContent = timeS;
         // console.log(timeS);
         // console.log(duration);
         csvtable.push(timeS);
