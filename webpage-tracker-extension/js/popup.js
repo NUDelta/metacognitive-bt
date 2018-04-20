@@ -106,7 +106,7 @@ datatable.id = "table";
 //add headers to table
 // var header = datatable.createTHead();
 var headerRow = datatable.insertRow();
-headerRow.insertCell().textContent = "Tab";
+// headerRow.insertCell().textContent = "Tab";
 headerRow.insertCell().textContent = "Date";
 headerRow.insertCell().textContent = "Start";
 headerRow.insertCell().textContent = "Total ";
@@ -141,12 +141,12 @@ if(session_started == true){
         r.insertCell(-1).textContent = start_time;
         csvtable.push(start_time.toString());
 
-        var end_time;
-        if (i == 0) {
-          end_time = new Date();
-        } else {
-          end_time = SortedActivity[i-1][0];
-        }
+        // var end_time;
+        // if (i == 0) {
+        //   end_time = new Date();
+        // } else {
+        //   end_time = SortedActivity[i-1][0];
+        // }
         //r.insertCell(-1).textContent = FormatDuration(end_time - SortedActivity[i][0]);
         // var duration = FormatDuration(end_time - hist[currTab][i][0]);
         var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
@@ -155,10 +155,10 @@ if(session_started == true){
         // console.log(duration);
         csvtable.push(timeS);
 
-        var tab = document.createElement("p");
-        var node = document.createTextNode(currTab.toString());
-        r.insertCell(0).appendChild(node);
-        csvtable.push(currTab.toString());
+        //var tab = document.createElement("p");
+        // var node = document.createTextNode(currTab.toString());
+        // r.insertCell(0).appendChild(node);
+        // csvtable.push(currTab.toString());
 
         var a = document.createElement("a");
         a.textContent = SortedActivity[i][1];
