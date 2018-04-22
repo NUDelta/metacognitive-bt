@@ -25,6 +25,8 @@ var sessionEnded = false;
 var start_idle, end_idle;
 var start_session_time, end_session_time;
 
+// var sessionEnded;
+
 // var activeStatus = true;
 // var IdleAction = {};
 
@@ -34,10 +36,11 @@ chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 
 
 //LOCATION STUFF
+var position;
 navigator.geolocation.getCurrentPosition(getPosition);
-
 function getPosition(pos){
-  console.log("got position", pos);
+  position = pos;
+  console.log("got position: ", position);
 }
 
 // var opt = {
@@ -158,14 +161,21 @@ function clearInactiveLog(inactivelog) {
 }
 
 
-// //TRYING THIS
-// function FormatDuration(d) {
-//   if (d < 0) {
-//     return "?";
-//   }
-//   var divisor = d < 3600000 ? [60000, 1000] : [3600000, 60000];
-//   function pad(x) {
-//     return x < 10 ? "0" + x : x;
-//   }
-//   return Math.floor(d / divisor[0]) + ":" + pad(Math.floor((d % divisor[0]) / divisor[1]));
-// }
+// HANDLE SESSION ENDED
+function HandleSessionEnd(){
+  end_session_time = Date.now();
+  sessionEnded = true;
+
+  chrome.storage.sync.set({'sessionStart': start_session_time}, function() {});
+  chrome.storage.sync.set({'sessionEnd': end_session_time}, function() {});
+  chrome.storage.sync.set({'sessionLocation': position }, function() {});
+
+  window.open("../summary.html");
+
+}
+
+
+
+
+
+
