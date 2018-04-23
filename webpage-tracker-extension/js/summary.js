@@ -12,8 +12,6 @@ var SortedActivity =[];
 var AllActivity = [];
 var timeS;
 
-//var popup = chrome.extension.getViews('popup.html');
-
  document.body.onload = function() {
   chrome.storage.sync.get(function(result) {
     if (!chrome.runtime.error) {
