@@ -50,6 +50,7 @@ else{
     document.body.appendChild(start_stop_btn);
 }
 
+//ON CLICK START/STOP
 start_stop_btn.addEventListener('click', function() {
     chrome.extension.getBackgroundPage().sessionStarted = !session_started;
     session_started = chrome.extension.getBackgroundPage().sessionStarted;
@@ -69,16 +70,15 @@ start_stop_btn.addEventListener('click', function() {
         start_stop_btn.appendChild(btn_txt);
     }
     else{
-        
         //update button text
         start_stop_btn.removeChild(btn_txt);
         btn_txt = document.createTextNode("Session Ended");
         start_stop_btn.appendChild(btn_txt);
 
+         //save data
+        chrome.storage.local.set({'sessionData': csvtable}, function() {});
+        console.log(SortedActivity);
         chrome.extension.getBackgroundPage().HandleSessionEnd();
-        
-        //save data
-        chrome.storage.local.set({'sessionData': SortedActivity}, function() {});
 
         //disable button and update popup
         chrome.tabs.reload();
@@ -94,15 +94,12 @@ var datatable = document.createElement("table");
 datatable.id = "table";
 
 //add headers to table
-// var header = datatable.createTHead();
 var headerRow = datatable.insertRow();
-// headerRow.insertCell().textContent = "Tab";
 headerRow.insertCell().textContent = "Date";
 headerRow.insertCell().textContent = "Start";
 headerRow.insertCell().textContent = "Total ";
 headerRow.insertCell().textContent = "Url";
 headerRow.id = "tableHeader";
-
 
 if(session_started == true){
     for (var i = 0; i < SortedActivity.length; i++) {
@@ -111,11 +108,11 @@ if(session_started == true){
         var date = "";
         var date_obj = "";
         try {
-          date = SortedActivity[i][0].toLocaleDateString();
+          date = (SortedActivity[i][0].toLocaleDateString()).toString();
         }
         catch(e) {
           date_obj = new Date(SortedActivity[i][0])
-          date = date_obj.toLocaleDateString();
+          date = (date_obj.toLocaleDateString()).toString();
         }
 
         r.insertCell(-1).textContent = date;
@@ -123,10 +120,10 @@ if(session_started == true){
 
         var start_time = "";
         try {
-          start_time = SortedActivity[i][0].toLocaleTimeString('en-GB').substring(0,5);
+          start_time = (SortedActivity[i][0].toLocaleTimeString('en-GB').substring(0,5)).toString();
         }
         catch(e) {
-          start_time = date_obj.toLocaleTimeString('en-GB').substring(0,5);
+          start_time = (date_obj.toLocaleTimeString('en-GB').substring(0,5)).toString();
         }
         r.insertCell(-1).textContent = start_time;
         csvtable.push(start_time.toString());
@@ -161,18 +158,19 @@ if(session_started == true){
 }
 
 
-//download csv file
+//download csv file - DO WE NEED THIS ANYMORE?
 csvData1 = csvtable.join(", ");
 csvToString = csvtable.toString();
 csvData = new Blob(['\ufeff' + ',' + csvToString], { type: 'text/csv;charset=utf-8' });
 var csvUrl = URL.createObjectURL(csvData);
 var encodedUri = encodeURI(csvUrl);
 
-var butn = document.createElement("BUTTON");
-var btn_text=document.createTextNode("download csv data!");
-butn.id = 'link';
-butn.appendChild(btn_text);
-document.body.appendChild(butn);
+//comment out button
+// var butn = document.createElement("BUTTON");
+// var btn_text=document.createTextNode("download csv data!");
+// butn.id = 'link';
+// butn.appendChild(btn_text);
+// document.body.appendChild(butn);
 
 function download( url, filename ) {
 	var link = document.createElement('a');
@@ -194,16 +192,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.body.appendChild(datatable);
 document.body.appendChild(link);
-
-
-// //TRYING THIS
-// function FormatDuration(d) {
-//   if (d < 0) {
-//     return "?";
-//   }
-//   var divisor = d < 3600000 ? [60000, 1000] : [3600000, 60000];
-//   function pad(x) {
-//     return x < 10 ? "0" + x : x;
-//   }
-//   return Math.floor(d / divisor[0]) + ":" + pad(Math.floor((d % divisor[0]) / divisor[1]));
-// }
