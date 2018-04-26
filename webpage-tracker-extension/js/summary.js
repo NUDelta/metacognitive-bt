@@ -33,7 +33,19 @@ document.body.onload = function() {
         r.insertCell(-1).textContent = start;
         var total = sessionData[i+2]
         r.insertCell(-1).textContent = total;
-        var url = sessionData[i+3]
+        
+        var url = sessionData[i+3];
+        var firstFound;
+
+        if (i+7 < sessionData.length) {
+           var nextUrl = sessionData[i+7];
+           console.log(nextUrl.includes(url));
+          if(!nextUrl.includes(url)) {
+            url = extractHostname(url);
+          }
+        }
+       
+        
         r.insertCell(-1).textContent = url;
       }
         document.body.appendChild(datatable);
@@ -51,4 +63,21 @@ document.body.onload = function() {
 
 };
 
+function extractHostname(url) {
+   var hostname;
+   //find & remove protocol (http, ftp, etc.) and get hostname
 
+   if (url.indexOf('://') > -1) {
+       hostname = url.split('/')[2];
+   }
+   else {
+       hostname = url.split('/')[0];
+   }
+
+   //find & remove port number
+   hostname = hostname.split(':')[0];
+   //find & remove “?”
+   hostname = hostname.split('?')[0];
+
+   return hostname;
+}
