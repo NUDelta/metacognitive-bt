@@ -56,7 +56,8 @@ start_stop_btn.addEventListener('click', function() {
     session_started = chrome.extension.getBackgroundPage().sessionStarted;
 
     if(session_started == true){
-        chrome.extension.getBackgroundPage().start_session_time = Date.now();
+        var start_time = new Date()
+        chrome.extension.getBackgroundPage().start_session_time = start_time.toLocaleTimeString();
         chrome.extension.getBackgroundPage().History = {};
 
         //reload tab to begin tracking
@@ -108,11 +109,11 @@ if(session_started == true){
         var date = "";
         var date_obj = "";
         try {
-          date = (SortedActivity[i][0].toLocaleDateString()).toString();
+          date = SortedActivity[i][0].toLocaleDateString();
         }
         catch(e) {
           date_obj = new Date(SortedActivity[i][0])
-          date = (date_obj.toLocaleDateString()).toString();
+          date = date_obj.toLocaleDateString();
         }
 
         r.insertCell(-1).textContent = date;

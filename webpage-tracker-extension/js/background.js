@@ -163,12 +163,13 @@ function clearInactiveLog(inactivelog) {
 
 // HANDLE SESSION ENDED
 function HandleSessionEnd(){
-  end_session_time = Date.now();
+  var end_time = new Date();
+  end_session_time = end_time.toLocaleTimeString();
   sessionEnded = true;
 
-  chrome.storage.sync.set({'sessionStart': start_session_time}, function() {});
-  chrome.storage.sync.set({'sessionEnd': end_session_time}, function() {});
-  chrome.storage.sync.set({'sessionLocation': position }, function() {});
+  chrome.storage.local.set({'sessionStart': start_session_time}, function() {});
+  chrome.storage.local.set({'sessionEnd': end_session_time}, function() {});
+  chrome.storage.local.set({'sessionLocation': position }, function() {});
 
   window.open("../summary.html");
 

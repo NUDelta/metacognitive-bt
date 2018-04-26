@@ -27,4 +27,4 @@ function FormatDuration(d) {
   return Math.floor(d / divisor[0]) + ":" + pad(Math.floor((d % divisor[0]) / divisor[1]));
 }
 
-exports.FormatDuration = FormatDuration;
+//exports.FormatDuration = FormatDuration;

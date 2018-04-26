@@ -16,10 +16,10 @@ document.body.onload = function() {
 
       datatable = document.createElement("table");
       datatable.id = "table";
-
+      document.getElementById("date").innerHTML = "Date: " + sessionData[0];
       //add headers to table
       var headerRow = datatable.insertRow();
-      headerRow.insertCell().textContent = "Date";
+      // headerRow.insertCell().textContent = "Date";
       headerRow.insertCell().textContent = "Start";
       headerRow.insertCell().textContent = "Total ";
       headerRow.insertCell().textContent = "Url";
@@ -27,24 +27,30 @@ document.body.onload = function() {
 
       for (var i = 0; i < sessionData.length; i=i+4) {
         var r = datatable.insertRow(-1);
-        var date = sessionData[i+0]
-        r.insertCell(-1).textContent = date;
+        // var date = sessionData[i+0]
+        // r.insertCell(-1).textContent = date;
         var start = sessionData[i+1]
         r.insertCell(-1).textContent = start;
         var total = sessionData[i+2]
         r.insertCell(-1).textContent = total;
         
-        var url = sessionData[i+3];
+        var url = extractHostname(sessionData[i+3]);
         var firstFound;
 
-        if (i+7 < sessionData.length) {
-           var nextUrl = sessionData[i+7];
-           console.log(nextUrl.includes(url));
-          if(!nextUrl.includes(url)) {
-            url = extractHostname(url);
-          }
-        }
-       
+        //ATTEMPT AT KEEPING DATA AFTER HOSTNAME
+        // if (i+7 < sessionData.length) {
+        //   var nextUrl = sessionData[i+7];
+        //   console.log(nextUrl.includes(url));
+        //   if(extractHostname(url) == extractHostname(nextUrl)) {
+        //     console.log("got emmm");
+        //   }
+        //   else{
+        //     url = extractHostname(url); 
+        //   }
+        // }
+        // else{
+        //  url = extractHostname(url); 
+        // }
         
         r.insertCell(-1).textContent = url;
       }
@@ -53,31 +59,40 @@ document.body.onload = function() {
     }});
   chrome.storage.local.get( 'sessionStart', function(result) {
     if (!chrome.runtime.error) {
-      console.log("session start:", result.sessionStart);
+      document.getElementById("start").innerHTML = "Session Start: " + result.sessionStart;
 
     }});
   chrome.storage.local.get( 'sessionEnd', function(result) {
     if (!chrome.runtime.error) {
-      console.log("session end: ", result.sessionEnd);
+      document.getElementById("end").innerHTML = "Session End: " + result.sessionEnd;
     }});
+  chrome.storage.local.get( 'sessionLocation', function(result) {
+    if (!chrome.runtime.error) {
+      document.getElementById("location").innerHTML = "Session Location: " + result.sessionLocation;
+  }});
 
 };
 
 function extractHostname(url) {
-   var hostname;
-   //find & remove protocol (http, ftp, etc.) and get hostname
+  var hostname;
+  //find & remove protocol (http, ftp, etc.) and get hostname
 
-   if (url.indexOf('://') > -1) {
-       hostname = url.split('/')[2];
-   }
-   else {
-       hostname = url.split('/')[0];
-   }
+  // if 0-15
+  if(url.substring(0,16) == "chrome-extension"){
+    return url.substring(52)
+  }
 
-   //find & remove port number
-   hostname = hostname.split(':')[0];
-   //find & remove “?”
-   hostname = hostname.split('?')[0];
+  if (url.indexOf('://') > -1) {
+      hostname = url.split('/')[2];
+  }
+  else {
+      hostname = url.split('/')[0];
+  }
 
-   return hostname;
+  //find & remove port number
+  hostname = hostname.split(':')[0];
+  //find & remove “?”
+  hostname = hostname.split('?')[0];
+
+  return hostname;
 }

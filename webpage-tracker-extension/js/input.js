@@ -23,6 +23,6 @@ function save_options(){
 
   	chrome.extension.getBackgroundPage().input_tab_open = false;
     //chrome.extension.getBackgroundPage().inactivelog.append
-  	//window.close();
+  	window.close();
 
 }
