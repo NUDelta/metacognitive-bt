@@ -1,7 +1,5 @@
-
-var data;
 var sessionData;
-var data2;
+var checkbox;
 var datatable;
 var csvtable = [];
 var tabId_re = /tabId=([0-9]+)/;
@@ -19,7 +17,7 @@ document.body.onload = function() {
       document.getElementById("date").innerHTML = "Date: " + sessionData[0];
       //add headers to table
       var headerRow = datatable.insertRow();
-      // headerRow.insertCell().textContent = "Date";
+      headerRow.insertCell().textContent = "Dist?";
       headerRow.insertCell().textContent = "Start";
       headerRow.insertCell().textContent = "Total ";
       headerRow.insertCell().textContent = "Url";
@@ -27,8 +25,11 @@ document.body.onload = function() {
 
       for (var i = 0; i < sessionData.length; i=i+4) {
         var r = datatable.insertRow(-1);
+        // r.id= t.toString();
         // var date = sessionData[i+0]
-        // r.insertCell(-1).textContent = date;
+        checkbox = '<input type="checkbox" name="checkdist" id="checkdist" value="no">';
+        r.insertCell(-1).innerHTML = checkbox;
+
         var start = sessionData[i+1]
         r.insertCell(-1).textContent = start;
         var total = sessionData[i+2]
@@ -54,8 +55,11 @@ document.body.onload = function() {
         
         r.insertCell(-1).textContent = url;
       }
+        // var check = document.querySelector("input[name=checkdist]");
+        // check.addEventListener('change', check_distraction);
+        // document.getElementById("checkdist").addEventListener('click', check_distraction);
         document.body.appendChild(datatable);
-        document.body.appendChild(link);
+        checkUpdates();
     }});
   chrome.storage.local.get( 'sessionStart', function(result) {
     if (!chrome.runtime.error) {
@@ -95,4 +99,20 @@ function extractHostname(url) {
   hostname = hostname.split('?')[0];
 
   return hostname;
+}
+
+function checkUpdates(){
+  var boxes = document.getElementsByName("checkdist");
+  for(var i = 0, box; box = boxes[i]; i++){
+    box.addEventListener('click', check_distraction);
+  }
+  
+  // console.log("hi", dist_checkboxes);
+}
+
+function check_distraction(){  
+  // var checkedRow = document.querySelector('.checkdist:checked').value;
+  // console.log(value, checkedRow.rowIndex);
+  // console.log(item.checkbox);
+  console.log("it worked!");
 }
