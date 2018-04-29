@@ -1,9 +1,5 @@
 
 console.log("popup reloaded at ", Date.now());
- TimeMe.initialize({
- 		currentPageName: "my-home-page", // current page
- 		// idleTimeoutInSeconds: 1000 // seconds
- 	});
 
 
 var csvtable = [];
@@ -129,19 +125,25 @@ if(session_started == true){
         r.insertCell(-1).textContent = start_time;
         csvtable.push(start_time.toString());
 
-        // var end_time;
-        // if (i == 0) {
-        //   end_time = new Date();
-        // } else {
-        //   end_time = SortedActivity[i-1][0];
-        // }
-        //r.insertCell(-1).textContent = FormatDuration(end_time - SortedActivity[i][0]);
-        // var duration = FormatDuration(end_time - hist[currTab][i][0]);
-        var timeS = TimeMe.getTimeOnCurrentPageInSeconds();
-        r.insertCell(-1).textContent = timeS;
+        var end_time;
+        var duration;
+        if (i == 0) {
+          end_time = new Date();
+        } else {
+          end_time = SortedActivity[i-1][0];
+        }
+        duration = FormatDuration(Math.abs(end_time - SortedActivity[i][0]));
+        //r.insertCell(-1).textContent = duration;
+        // TimeMe.initialize({
+        //    currentPageName: "my-home-page", // current page
+        //    // idleTimeoutInSeconds: 1000 // seconds
+        //  });
+        // var timeS = TimeMe.getTimeOnAllPagesInSeconds()[0]["timeOnPage"];
+        // console.log( TimeMe.getTimeOnAllPagesInSeconds()[0]["timeOnPage"]);
+        r.insertCell(-1).textContent = duration.toString();
         // console.log(timeS);
-        // console.log(duration);
-        csvtable.push(timeS);
+        console.log(duration);
+        csvtable.push(duration);
 
         //var tab = document.createElement("p");
         // var node = document.createTextNode(currTab.toString());
@@ -173,23 +175,23 @@ var encodedUri = encodeURI(csvUrl);
 // butn.appendChild(btn_text);
 // document.body.appendChild(butn);
 
-function download( url, filename ) {
-	var link = document.createElement('a');
-	link.setAttribute('href',url);
-	link.setAttribute('download',filename);
-	var event = document.createEvent('MouseEvents');
-	event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-	link.dispatchEvent(event);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    var link = document.getElementById('link');
-    // onClick's logic below:
-    link.addEventListener('click', function() {
-        download(encodedUri, "data.csv");
-
-    });
-});
+// function download( url, filename ) {
+// 	var link = document.createElement('a');
+// 	link.setAttribute('href',url);
+// 	link.setAttribute('download',filename);
+// 	var event = document.createEvent('MouseEvents');
+// 	event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+// 	link.dispatchEvent(event);
+// }
+//
+// document.addEventListener('DOMContentLoaded', function() {
+//     var link = document.getElementById('link');
+//     // onClick's logic below:
+//     link.addEventListener('click', function() {
+//         download(encodedUri, "data.csv");
+//
+//     });
+// });
 
 document.body.appendChild(datatable);
-document.body.appendChild(link);
+//document.body.appendChild(link);
