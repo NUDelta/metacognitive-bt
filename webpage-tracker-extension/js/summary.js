@@ -63,16 +63,16 @@ document.body.onload = function() {
     }});
   chrome.storage.local.get( 'sessionStart', function(result) {
     if (!chrome.runtime.error) {
-      document.getElementById("start").innerHTML = "Session Start: " + result.sessionStart;
+      document.getElementById("start").innerHTML = "Start: " + result.sessionStart;
 
     }});
   chrome.storage.local.get( 'sessionEnd', function(result) {
     if (!chrome.runtime.error) {
-      document.getElementById("end").innerHTML = "Session End: " + result.sessionEnd;
+      document.getElementById("end").innerHTML = "End: " + result.sessionEnd;
     }});
   chrome.storage.local.get( 'sessionLocation', function(result) {
     if (!chrome.runtime.error) {
-      document.getElementById("location").innerHTML = "Session Location: " + result.sessionLocation;
+      // document.getElementById("location").innerHTML = "Session Location: " + result.sessionLocation;
   }});
 
 };
@@ -106,13 +106,18 @@ function checkUpdates(){
   for(var i = 0, box; box = boxes[i]; i++){
     box.addEventListener('click', check_distraction);
   }
-  
-  // console.log("hi", dist_checkboxes);
 }
 
+
 function check_distraction(){  
-  // var checkedRow = document.querySelector('.checkdist:checked').value;
-  // console.log(value, checkedRow.rowIndex);
-  // console.log(item.checkbox);
-  console.log("it worked!");
+  var boxes = document.getElementsByName("checkdist");
+  var table = document.getElementById("table");
+  for(var i = 0, box; box = boxes[i]; i++){
+    if(box.checked){
+      table.rows[i+1].style.color = "red";
+    }
+    if(!box.checked){
+      table.rows[i+1].style.color = "black";
+    }
+  }
 }
