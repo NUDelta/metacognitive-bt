@@ -1,6 +1,8 @@
 var sessionData;
 var checkbox;
 var datatable;
+var start_time;
+var end_time;
 var csvtable = [];
 var tabId_re = /tabId=([0-9]+)/;
 var match = tabId_re.exec(window.location.hash);
@@ -63,12 +65,14 @@ document.body.onload = function() {
     }});
   chrome.storage.local.get( 'sessionStart', function(result) {
     if (!chrome.runtime.error) {
-      document.getElementById("start").innerHTML = "Start: " + result.sessionStart;
+      start_time = result.sessionStart;
+      document.getElementById("start").innerHTML = "Start: " + start_time;
 
     }});
   chrome.storage.local.get( 'sessionEnd', function(result) {
     if (!chrome.runtime.error) {
-      document.getElementById("end").innerHTML = "End: " + result.sessionEnd;
+      end_time = result.sessionEnd;
+      document.getElementById("end").innerHTML = "End: " + end_time;
     }});
   chrome.storage.local.get( 'sessionLocation', function(result) {
     if (!chrome.runtime.error) {
@@ -112,9 +116,12 @@ function checkUpdates(){
 function check_distraction(){  
   var boxes = document.getElementsByName("checkdist");
   var table = document.getElementById("table");
+  var distracted_time = 0;
   for(var i = 0, box; box = boxes[i]; i++){
     if(box.checked){
       table.rows[i+1].style.color = "red";
+      distracted_time += parseFloat(table.rows[i+1].cells[2].innerText);
+      document.getElementById("distracted").innerHTML = "Distracted Time: " + distracted_time.toString();
     }
     if(!box.checked){
       table.rows[i+1].style.color = "black";

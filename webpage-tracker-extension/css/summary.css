@@ -37,7 +37,11 @@ button{
    font-size: 15px;
    padding: 5px;
 }
-#location{
+#total{
+  font-size: 15px;
+  padding: 5px;
+}
+#distracted{
    font-size: 15px;
    padding: 5px;
    padding-bottom: 10px;

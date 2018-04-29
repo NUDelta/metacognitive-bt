@@ -2,7 +2,7 @@
 console.log("popup reloaded at ", Date.now());
  TimeMe.initialize({
  		currentPageName: "my-home-page", // current page
- 		idleTimeoutInSeconds: 30 // seconds
+ 		// idleTimeoutInSeconds: 1000 // seconds
  	});
 
 
