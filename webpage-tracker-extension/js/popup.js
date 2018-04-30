@@ -1,4 +1,3 @@
-
 console.log("popup reloaded at ", Date.now());
 
 var csvtable = [];

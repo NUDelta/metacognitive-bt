@@ -29,8 +29,6 @@ document.body.onload = function() {
         var r = datatable.insertRow(-1);
         r.id = "row"+(i/4);
         r.setAttribute('data-toggle',"popover");
-
-
         // r.id= t.toString();
         // var date = sessionData[i+0]
         checkbox = '<input type="checkbox" name="checkdist" id="checkdist" value="no">';
@@ -65,43 +63,16 @@ document.body.onload = function() {
 
         r.insertCell(-1).textContent = url;
       }
-        // var check = document.querySelector("input[name=checkdist]");
-        // check.addEventListener('change', check_distraction);
-        // document.getElementById("checkdist").addEventListener('click', check_distraction);
+;
         document.body.appendChild(datatable);
 
-        // $("tr").hover(function(){
-        //     console.log($(this));
-        //        $(this).append("<div></div>");
-        //        }, function(){
-        //          var original = this.text;
-        //        $(this).text(original);
-        //      });
-
         for (var k = 0; k < urlMap.length; k++) {
-          // document.getElementById("row"+k).onmouseover = function(){
-            //console.log("fuckjquery");
-            // var myDiv = document.createElement('div');
-
-              //console.log(urlMap[p]);
               $('[data-toggle="popover"]').popover({
                  placement: 'right',
                  trigger: 'hover',
                  title: urlMap[5],
               });
-
-
-          // };
-          // document.getElementById("row"+k).onmouseout = function(){
-          //   // console.log("pieceofcrap");
-          // };
-
-
-
         }
-
-
-
         checkUpdates();
     }});
   chrome.storage.local.get( null, function(result) {
