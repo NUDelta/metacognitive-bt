@@ -1,0 +1,3 @@
+Instructions:
+
+Replace the file path of the csvdata with the file that you download from the webtime-tracker-extension!

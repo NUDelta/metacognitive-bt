@@ -1,0 +1,47 @@
+{
+  "manifest_version": 2,
+
+  "name": "Page Timer",
+  "description": "How long have I been on this page?",
+  "version": "1.7",
+  "author": "sworley@google.com",
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "idle",
+    "notifications",
+    "geolocation",
+    "storage"
+  ],
+  "icons": {
+    "16": "images/clock16.png",
+    "48": "images/clock48.png",
+    "128": "images/clock128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/browser-action-19.png",
+      "38": "images/browser-action-38.png"
+    }
+  },
+  "background": {
+    "scripts": [
+      "js/common.js",
+      "js/background.js",
+      "js/timeme.min.js",
+      "js/jquery-3.3.1.min.js",
+      "js/popper.min.js",
+      "bootstrap/js/bootstrap.min.js",
+      "bootstrap/js/bootstrap.bundle.js",
+      "bootstrap/js/bootstrap.bundle.min.js",
+      "bootstrap/js/bootstrap.bundle.min.js.map",
+      "bootstrap/js/bootstrap.js",
+      "bootstrap/js/bootstrap.js.map",
+      "bootstrap/js/bootstrap.min.js.map",
+      "bootstrap/js/bootstrap.bundle.js.map"
+      ],
+    "persistent": true
+  },
+  "options_page": "options.html"
+}

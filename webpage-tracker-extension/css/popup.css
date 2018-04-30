@@ -1,0 +1,29 @@
+body{
+	background: #eedef7;
+}
+
+table{
+	border-collapse: collapse;
+}
+table td{
+	padding: 5px;
+}
+
+button{
+	background-color: #d398e6;
+    border: none;
+    color: black;
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+
+#start_stop{
+    padding: 10px;
+}
+
+#tableHeader{
+    background: #d398e6;
+}

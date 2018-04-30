@@ -1,0 +1,48 @@
+body{
+	background: #eedef7 !important;;
+    text-align: center !important;;
+}
+
+table{
+	border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+table td{
+	padding: 5px;
+}
+
+button{
+	background-color: #d398e6;
+    border: none;
+    color: black;
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+#tableHeader{
+    background: #d398e6;
+}
+#date{
+    font-size: 15px;
+    padding: 5px;
+}
+#start{
+   font-size: 15px;
+   padding: 5px;
+}
+#end{
+   font-size: 15px;
+   padding: 5px;
+}
+#total{
+  font-size: 15px;
+  padding: 5px;
+}
+#distracted{
+   font-size: 15px;
+   padding: 5px;
+   padding-bottom: 10px;
+}
