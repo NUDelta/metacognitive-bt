@@ -7,7 +7,6 @@ var csvtable = [];
 var tabId_re = /tabId=([0-9]+)/;
 var match = tabId_re.exec(window.location.hash);
 
-
 document.body.onload = function() {
   chrome.storage.local.get( 'sessionData', function(result) {
     if (!chrome.runtime.error) {
@@ -133,7 +132,11 @@ function checkUpdates(){
 function check_distraction(){
   var boxes = document.getElementsByName("checkdist");
   var table = document.getElementById("table");
+  var isChecked =  $('input:checkbox').is(':checked');
    distracted_time = 0;
+  if (!isChecked) {
+    document.getElementById("distracted").innerHTML = "Distracted Time: 00:00";
+  }
   for(var i = 0, box; box = boxes[i]; i++){
     if(box.checked){
       table.rows[i+1].style.color = "red";
