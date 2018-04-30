@@ -36,7 +36,7 @@ document.body.onload = function() {
         r.insertCell(-1).textContent = start;
         var total = sessionData[i+2]
         r.insertCell(-1).textContent = total;
-        
+
         var url = extractHostname(sessionData[i+3]);
         var firstFound;
 
@@ -48,13 +48,13 @@ document.body.onload = function() {
         //     console.log("got emmm");
         //   }
         //   else{
-        //     url = extractHostname(url); 
+        //     url = extractHostname(url);
         //   }
         // }
         // else{
-        //  url = extractHostname(url); 
+        //  url = extractHostname(url);
         // }
-        
+
         r.insertCell(-1).textContent = url;
       }
         // var check = document.querySelector("input[name=checkdist]");
@@ -63,21 +63,38 @@ document.body.onload = function() {
         document.body.appendChild(datatable);
         checkUpdates();
     }});
-  chrome.storage.local.get( 'sessionStart', function(result) {
+  chrome.storage.local.get( null, function(result) {
     if (!chrome.runtime.error) {
       start_time = result.sessionStart;
+      end_time = result.sessionEnd;
       document.getElementById("start").innerHTML = "Start: " + start_time;
+      document.getElementById("end").innerHTML = "End: " + end_time;
+      var raw_start = start_time.toString().substring(0, 8).split(":");
+      var start_to_seconds = (+raw_start[0]) * 60 * 60 + (+raw_start[1]) * 60 + (+raw_start[2])
+      var raw_end = end_time.toString().substring(0, 8).split(":");
+      var end_to_seconds = (+raw_end[0]) * 60 * 60 + (+raw_end[1]) * 60 + (+raw_end[2])
+
+      var raw_total = end_to_seconds - start_to_seconds;
+
+      var total_to_date = new Date(null);
+      total_to_date.setSeconds(raw_total);
+      //console.log(sec_to_date);
+      var total_string = total_to_date.toString().substring(19, 24);
+
+      console.log(total_string);
+      document.getElementById("total").innerHTML = "Total Time: "+ total_string;
 
     }});
-  chrome.storage.local.get( 'sessionEnd', function(result) {
-    if (!chrome.runtime.error) {
-      end_time = result.sessionEnd;
-      document.getElementById("end").innerHTML = "End: " + end_time;
-    }});
+  // chrome.storage.local.get( 'sessionEnd', function(result) {
+  //   if (!chrome.runtime.error) {
+  //     end_time = result.sessionEnd;
+  //     document.getElementById("end").innerHTML = "End: " + end_time;
+  //   }});
   chrome.storage.local.get( 'sessionLocation', function(result) {
     if (!chrome.runtime.error) {
       // document.getElementById("location").innerHTML = "Session Location: " + result.sessionLocation;
   }});
+  document.getElementById("distracted").innerHTML = "Distracted Time: 00:00";
 
 };
 
@@ -113,15 +130,25 @@ function checkUpdates(){
 }
 
 
-function check_distraction(){  
+function check_distraction(){
   var boxes = document.getElementsByName("checkdist");
   var table = document.getElementById("table");
-  var distracted_time = 0;
+   distracted_time = 0;
   for(var i = 0, box; box = boxes[i]; i++){
     if(box.checked){
       table.rows[i+1].style.color = "red";
-      distracted_time += parseFloat(table.rows[i+1].cells[2].innerText);
-      document.getElementById("distracted").innerHTML = "Distracted Time: " + distracted_time.toString();
+      var raw_time = table.rows[i+1].cells[2].innerText.split(':');
+      var time_to_seconds = (+raw_time[0]) * 60 + (+raw_time[1]);
+      distracted_time += time_to_seconds;
+
+      var sec_to_date = new Date(null);
+      sec_to_date.setSeconds(distracted_time);
+      //console.log(sec_to_date);
+      var date_string = sec_to_date.toString().substring(19, 24);
+      //console.log(table.rows[i+1].cells[2].innerText);
+      //console.log(distracted_time);
+      document.getElementById("distracted").innerHTML = "Distracted Time: " + date_string;
+
     }
     if(!box.checked){
       table.rows[i+1].style.color = "black";
