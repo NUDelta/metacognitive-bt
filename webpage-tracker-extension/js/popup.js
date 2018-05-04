@@ -102,6 +102,7 @@ if(session_started == true){
 
         var date = "";
         var date_obj = "";
+        var prev_date_obj = "";
         try {
           date = SortedActivity[i][0].toLocaleDateString();
         }
@@ -127,10 +128,24 @@ if(session_started == true){
         var duration;
         if (i == 0) {
           end_time = new Date();
-        } else {
-          end_time = SortedActivity[i-1][0];
         }
-        duration = FormatDuration(Math.abs(end_time - SortedActivity[i][0]));
+        else {
+            end_time = SortedActivity[i-1][0];
+            if (typeof(end_time) == "string") {
+              end_time = new Date(SortedActivity[i-1][0])
+            }
+          }
+
+
+          console.log("end of last windos: "+ typeof(end_time));
+          console.log("start of current window: "+ typeof(SortedActivity[i][0]));
+          console.log(end_time - SortedActivity[i][0]);
+          duration = FormatDuration(Math.abs(end_time - SortedActivity[i][0]));
+          if (duration == "NaN:NaN") {
+            duration = FormatDuration(Math.abs(end_time - new Date(SortedActivity[i][0])));
+          }
+
+
         //r.insertCell(-1).textContent = duration;
         // TimeMe.initialize({
         //    currentPageName: "my-home-page", // current page
@@ -140,7 +155,7 @@ if(session_started == true){
         // console.log( TimeMe.getTimeOnAllPagesInSeconds()[0]["timeOnPage"]);
         r.insertCell(-1).textContent = duration.toString();
         // console.log(timeS);
-        console.log(duration);
+        //console.log(duration);
         csvtable.push(duration);
 
         //var tab = document.createElement("p");
