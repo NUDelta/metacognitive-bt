@@ -9,6 +9,7 @@ var idleAction = chrome.extension.getBackgroundPage().inactivelog;
 
 var keyList = Object.keys(hist);
 var SortedActivity =[];
+var presortedActivity =[];
 var AllActivity = [];
 
 //Interleaving web stuff with the idle stuff
@@ -23,7 +24,24 @@ for (var j = 0; j < idleAction.length; j++) {
   AllActivity.push(idleAction[j])
 }
 
-SortedActivity = AllActivity.sort()
+presortedActivity = AllActivity.sort()
+
+//to get rid of the chrome extension page
+for (var k = 0; k < presortedActivity.length-1; k++) {
+  if(presortedActivity[k][1] == "chrome-extension://cikkfgfmolippggieoejbpfjckfkndfc/inactivity-input.html") {
+    var time = presortedActivity[k+1][0];
+    var next = [time, presortedActivity[k+1][1]];
+    //console.log(next);
+    SortedActivity.push(next);
+  }else if(typeof(presortedActivity[k][0]) == "string") {
+    continue;
+  }
+  else {
+    SortedActivity.push(presortedActivity[k])
+  }
+}
+
+console.log(SortedActivity);
 
 //START AND STOP SESSION STUFF
 var session_started = chrome.extension.getBackgroundPage().sessionStarted;
