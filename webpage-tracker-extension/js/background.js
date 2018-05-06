@@ -56,7 +56,7 @@ function getPosition(pos){
 // }
 
 //DETECT INACTIVITY CHANGE AND SAVE RESPONSE
-chrome.idle.setDetectionInterval(360);
+chrome.idle.setDetectionInterval(120);
 chrome.idle.onStateChanged.addListener(function(state) {
 
   if(sessionStarted == true){
