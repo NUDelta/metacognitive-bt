@@ -1,5 +1,5 @@
 # metacognitive-bt
-Tools to help users track learning behaviors :nerd_face: :bulb:
+A tool to help users track learning behaviors :nerd_face: :bulb:
 
 ## Chrome Extension (webpage-tracker-extension)
 
