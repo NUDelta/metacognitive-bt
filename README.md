@@ -6,6 +6,8 @@ Tools to help users track learning behaviors :nerd_face: :bulb:
 #### About
 Tracks web activity, and prompts user for input when detects periods of inactivity to provide a full picture of activity during a work session. 
 
+\:closed_book: :green_book: :blue_book: 
+
 #### Setup:
 1. Clone the repository `git clone https://github.com/NUDelta/metacognitive-bt`
 2. Open Chrome, navigate to Window >> Extensions and enable developer mode
