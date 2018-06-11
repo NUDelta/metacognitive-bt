@@ -22,7 +22,7 @@ Tracks web activity, and prompts user for input when detects periods of inactivi
 4. When done studying, click end session in the extension pop up
 5. A summary page will pop up with a timeline of your activity, you can click the checkboxes next to each entry if you determine an activity to be a distraction
 6. To start a new session, go back to Chrome >> Window >> Extensions, and click re-load extension
-7. Now you are good to go for a new session, happy studying!! 
+7. Now you are good to go for a new session, happy learning!! 
 
 \:green_apple: :apple: :green_apple:
 
